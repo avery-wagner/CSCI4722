@@ -89,6 +89,7 @@ def analyze_results(tr_preds, new_preds, threshold=0.5):
 
     return stats_tr, stats_new
 
+
 # histogram not really ideal for small datasets - don't use
 def generate_histograms(stats_train, stats_new, report_dir, threshold):
     # Confidence distribution comparison plot
@@ -151,7 +152,6 @@ def generate_histograms(stats_train, stats_new, report_dir, threshold):
     plt.show()
 
 
-
 def generate_boxplots(stats_train, stats_new, report_dir, threshold):
     fig, ax = plt.subplots(figsize=(10, 6))
 
@@ -178,6 +178,7 @@ def generate_boxplots(stats_train, stats_new, report_dir, threshold):
     plt.savefig(f"{report_dir}/boxplots.png", dpi=150)
     plt.show()
 
+
 def generate_report(stats_train, stats_new, report_dir, threshold, N):
     if N >= MIN_HIST_SAMPLES:
         generate_histograms(stats_train, stats_new, report_dir, threshold)
@@ -188,8 +189,6 @@ def generate_report(stats_train, stats_new, report_dir, threshold, N):
     ).ctime()
     results_output = f"""
 #  🐧 pinguid report - {date}
-
-------
 
 ![result boxplots](./boxplots.png)
 {f"![result histogram plots](./histograms.png)" if N >= MIN_HIST_SAMPLES else ""}
@@ -204,9 +203,9 @@ def generate_report(stats_train, stats_new, report_dir, threshold, N):
 
 | | | | |
 |--|--|--|--|
-| **T-test** ($\\alpha = 0.05$) | **t-stat** = {stats_train['t_stat']:.3f}  | **p-value** = {stats_train['p_value']:.3f} | $\implies$ {"Statistically significant difference ($p < 0.05$)" if stats_train['p_value'] < 0.05 else "No significant difference ($p \geq 0.05$)"} |
+| **T-test** ($\\alpha = 0.05$) | **t-stat** = {stats_train['t_stat']:.3f}  | **p-value** = {stats_train['p_value']:.3f} | {"Statistically significant difference (p < 0.05)" if stats_train['p_value'] < 0.05 else "No significant difference (p >= 0.05)"} |
 | | | | |
-    """
+"""
 
     with open(f"{report_dir}/report.md", "w", encoding="utf-8") as f:
         f.write(results_output)
@@ -232,7 +231,7 @@ def main():
     train_pred_dir.mkdir(exist_ok=True)
 
     predictor = Predictor(ENDPOINT_ID, api_key=API_KEY)
-    color_map = {"Penguin": "blue", "Seal": "magenta"}
+    color_map = {"Penguin": "blue"}
     options = {"color_map": color_map}
 
     # Load all images
