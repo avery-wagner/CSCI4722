@@ -1,1 +1,4 @@
-*/landinglens.sh 
+*/.env
+venv/
+__pycache__/
+*/reports/*
