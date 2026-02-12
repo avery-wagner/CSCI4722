@@ -1,0 +1,7 @@
+python-dotenv
+pillow
+landingai~=0.3.0
+matplotlib
+ipython
+numpy
+scipy
