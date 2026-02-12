@@ -1,5 +1,5 @@
 """
-* PinguID *
+* pinguid *
 LandingLens Implementation Lab
 CSCI 4722 - Computer Vision
 Avery Wagner | Due Feb. 12, 2026
@@ -89,34 +89,7 @@ def analyze_results(tr_preds, new_preds, threshold=0.5):
 
     return stats_tr, stats_new
 
-
-def generate_boxplots(stats_train, stats_new, report_dir, threshold):
-    fig, ax = plt.subplots(figsize=(10, 6))
-
-    data = [stats_train["all_scores"], stats_new["all_scores"]]
-    bp = ax.boxplot(
-        data, tick_labels=["Training Dataset", "New Dataset"], patch_artist=True
-    )
-
-    for patch in bp["boxes"]:
-        patch.set_facecolor("lightgreen")
-
-    ax.axhline(
-        threshold,
-        color="orange",
-        linestyle=":",
-        linewidth=2,
-        label=f"Threshold: {threshold}",
-    )
-    ax.set_title("Comparison of Confidence Score Distributions")
-    ax.set_ylabel("Confidence Score")
-    ax.legend(fontsize=10)
-    ax.grid(axis="y", alpha=0.3)
-    plt.tight_layout()
-    plt.savefig(f"{report_dir}/boxplots.png", dpi=150)
-    plt.show()
-
-
+# histogram not really ideal for small datasets - don't use
 def generate_histograms(stats_train, stats_new, report_dir, threshold):
     # Confidence distribution comparison plot
     fig, axes = plt.subplots(1, 2, figsize=(12, 4))
@@ -178,6 +151,33 @@ def generate_histograms(stats_train, stats_new, report_dir, threshold):
     plt.show()
 
 
+
+def generate_boxplots(stats_train, stats_new, report_dir, threshold):
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    data = [stats_train["all_scores"], stats_new["all_scores"]]
+    bp = ax.boxplot(
+        data, tick_labels=["Training Dataset", "New Dataset"], patch_artist=True
+    )
+
+    for patch in bp["boxes"]:
+        patch.set_facecolor("lightgreen")
+
+    ax.axhline(
+        threshold,
+        color="orange",
+        linestyle=":",
+        linewidth=2,
+        label=f"Threshold: {threshold}",
+    )
+    ax.set_title("Comparison of Confidence Score Distributions")
+    ax.set_ylabel("Confidence Score")
+    ax.legend(fontsize=10)
+    ax.grid(axis="y", alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(f"{report_dir}/boxplots.png", dpi=150)
+    plt.show()
+
 def generate_report(stats_train, stats_new, report_dir, threshold, N):
     if N >= MIN_HIST_SAMPLES:
         generate_histograms(stats_train, stats_new, report_dir, threshold)
@@ -187,7 +187,7 @@ def generate_report(stats_train, stats_new, report_dir, threshold, N):
         str.split(str(report_dir), "reports/report-")[1].rstrip("/")
     ).ctime()
     results_output = f"""
-#  🐧 PinguID Report - {date}
+#  🐧 pinguid report - {date}
 
 ------
 
